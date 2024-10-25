@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stop Procrastinating Now</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, sans-serif;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .screen {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        button {
+            width: 100%;
+            max-width: 300px;
+            padding: 15px;
+            font-size: 16px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 8px auto;
+            display: block;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:active {
+            transform: scale(0.98);
+            background-color: #e0e0e0;
+        }
+
+        .main-button {
+            font-size: 20px;
+            padding: 20px;
+            margin: 20px auto;
+            background-color: #f5f5f5;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .checkbox-container {
+            text-align: left;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 12px;
+            background-color: #f9f9f9;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        input[type="checkbox"] {
+            margin-right: 12px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        label {
+            font-size: 16px;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .back-button {
+            margin-top: 15px;
+            padding: 12px;
+            font-size: 14px;
+            background-color: #eee;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            button {
+                padding: 12px;
+                font-size: 15px;
+            }
+
+            .main-button {
+                font-size: 18px;
+                padding: 15px;
+            }
+
+            .checkbox-item {
+                padding: 10px;
+            }
+
+            label {
+                font-size: 15px;
+            }
+        }
+
+        /* iOS-style switches */
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 50px;
+            height: 30px;
+            background-color: #ddd;
+            border-radius: 15px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        input[type="checkbox"]::before {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: white;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #4CAF50;
+        }
+
+        input[type="checkbox"]:checked::before {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Rest of the HTML remains the same as previous version -->
+    <div id="screen1" class="screen active">
+        <button onclick="showScreen('screen2')" class="main-button">
+            I want to stop procrastinating NOW
+        </button>
+    </div>
+
+    <div id="screen2" class="screen">
+        <h2>What are you doing right now?</h2>
+        <button onclick="showSteps('watching')">📺 Watching Shows/Videos</button>
+        <button onclick="showSteps('social')">📱 Scrolling Social Media</button>
+        <button onclick="showSteps('gaming')">🎮 Gaming</button>
+        <button onclick="showSteps('shopping')">🛍️ Online Shopping</button>
+    </div>
+
+    <div id="screen3" class="screen">
+        <div id="steps-container" class="checkbox-container">
+            <!-- Steps will be inserted here -->
+        </div>
+        <button onclick="showScreen('screen2')" class="back-button">← Choose Different Activity</button>
+    </div>
+
+    <script>
+        // JavaScript remains the same as previous version
+        const activities = {
+            watching: [
+                "Pause video now",
+                "Close tab",
+                "Stand up for 5 seconds",
+                "Get water",
+                "Open just one work file",
+                "Work for just 5 minutes"
+            ],
+            social: [
+                "Close app/tab now",
+                "Put phone face down",
+                "Take one deep breath",
+                "Open just one work file",
+                "Do one tiny task (even just 3 minutes)"
+            ],
+            gaming: [
+                "Quick save now",
+                "Close game",
+                "Quick stretch",
+                "Open one work item",
+                "Just 5 minutes of work - that's all!"
+            ],
+            shopping: [
+                "Close tabs now",
+                "Write one item you wanted (for later)",
+                "Stand up",
+                "Open one work task",
+                "Just 3 minutes to start"
+            ]
+        };
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function showSteps(activity) {
+            const container = document.getElementById('steps-container');
+            container.innerHTML = '';
+            
+            activities[activity].forEach((step, index) => {
+                const div = document.createElement('div');
+                div.className = 'checkbox-item';
+                div.innerHTML = `
+                    <input type="checkbox" id="step${index}" onchange="celebrate(${index}, ${activities[activity].length})">
+                    <label for="step${index}">${step}</label>
+                `;
+                container.appendChild(div);
+            });
+            
+            showScreen('screen3');
+        }
+
+        function celebrate(stepIndex, totalSteps) {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'];
+            
+            confetti({
+                particleCount: stepIndex === totalSteps - 1 ? 150 : 50,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: [colors[stepIndex % colors.length]]
+            });
+
+            // Check if all boxes are checked
+            const allChecked = Array.from(document.querySelectorAll('input[type="checkbox"]'))
+                .every(checkbox => checkbox.checked);
+            
+            if (allChecked) {
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 200,
+                        spread: 160,
+                        origin: { y: 0.6 }
+                    });
+                }, 300);
+            }
+        }
+    </script>
+</body>
+</html>
